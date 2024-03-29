@@ -13,3 +13,19 @@ for z in *.zip; do
 	unzip "$z" -d "$target"
 	rm -rf "$z" # Comment this out if you don't want the auto zip removal
 done
+
+# helper func to move files to student folders
+move_student_files() {
+    student_name="$1"
+    mkdir -p "$student_name"  # create new folder for the student if it doesn't exist
+    mv "$2" "$student_name"  # move file into the student's folder
+}
+
+# for any file in the current directory (depth 1):
+find . -maxdepth 1 -type f | while IFS= read -r file; do
+    # get student name from the file name (read until first '_' & remove './' from the beginning of the file name)
+    folder_name=$(echo "$file" | cut -d'_' -f1 | sed 's|./||')
+    # helper func to move file to student folder
+    move_student_files "$folder_name" "$file"
+    echo "Moved $file to $folder_name folder."
+done
