@@ -27,5 +27,4 @@ find . -maxdepth 1 -type f | while IFS= read -r file; do
     folder_name=$(echo "$file" | cut -d'_' -f1 | sed 's|./||')
     # helper func to move file to student folder
     move_student_files "$folder_name" "$file"
-    echo "Moved $file to $folder_name folder."
 done
